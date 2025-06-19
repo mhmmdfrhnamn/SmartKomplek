@@ -34,6 +34,8 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 48,),
 
                 // Form Input
+
+                // Email
                 TextField(
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -48,8 +50,67 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
+
+                // Password
+                TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: "Password",
+                    prefixIcon: const Icon(Icons.lock_outline),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 32),
+
+                // Tombol Login
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo,
+                    minimumSize: const Size.fromHeight(55),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: (){
+
+                  },
+                  child: Text(
+                    "Login",
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(height:16),
+
+                // Navigasi ke Hal Register
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Belum Punya Akun", style: GoogleFonts.poppins()),
+                    TextButton(
+                      onPressed: () {
+                        // Push ke register
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>const RegisterScreen()),);
+                      },
+                      child: Text(
+                        "Daftar Disini",
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.bold, color:Colors.indigo),
+                      ),
+                    ),
+                  ],
+                )
               ],
-            ),)),
+            ),
+          ),
+        ),
       ),
     );
   }
