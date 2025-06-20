@@ -25,7 +25,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Login untuk melanjutkan",
+                  "Daftar untuk melanjutkan",
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: Colors.grey[600],
