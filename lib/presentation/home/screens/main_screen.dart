@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:smart_komplek/presentation/home/tabs/beranda_tab.dart';
+import 'package:smart_komplek/presentation/home/tabs/beranda_tab.dart';
 // import 'package:smart_komplek/presentation/home/tabs/iuran_tab.dart';
 // import 'package:smart_komplek/presentation/home/tabs/profil_tab.dart';
 
@@ -15,7 +15,7 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-    // const BerandaTab(),
+    const BerandaTab(),
     // const IuranTab(),
     // const ProfilTab(),
   ];
