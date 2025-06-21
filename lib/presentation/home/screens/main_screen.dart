@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_komplek/presentation/home/tabs/beranda_tab.dart';
-// import 'package:smart_komplek/presentation/home/tabs/iuran_tab.dart';
+import 'package:smart_komplek/presentation/home/tabs/iuran_tab.dart';
 // import 'package:smart_komplek/presentation/home/tabs/profil_tab.dart';
 
 class MainScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     const BerandaTab(),
-    // const IuranTab(),
+    const IuranTab(),
     // const ProfilTab(),
   ];
 
