@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smart_komplek/presentation/home/screens/add_announcement_screen.dart';
 import 'package:smart_komplek/presentation/home/tabs/beranda_tab.dart';
 import 'package:smart_komplek/presentation/home/tabs/iuran_tab.dart';
-// import 'package:smart_komplek/presentation/home/tabs/profil_tab.dart';
+import 'package:smart_komplek/presentation/home/tabs/profil_tab.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -17,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   final List<Widget> _pages = [
     const BerandaTab(),
     const IuranTab(),
-    // const ProfilTab(),
+    const ProfilTab(),
   ];
 
   // Fungsi yang akan dipanggil saat tab di klik
@@ -37,7 +38,7 @@ class _MainScreenState extends State<MainScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-          MaterialPageRoute(builder: (context)=> /*const AddAnnouncementScreen()*/),
+          MaterialPageRoute(builder: (context)=> const AddAnnouncementScreen()),
           );
         },
         backgroundColor: Colors.indigo,

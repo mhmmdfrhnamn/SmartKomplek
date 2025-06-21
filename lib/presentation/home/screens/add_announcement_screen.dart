@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AddAnnouncementScreem extends StatelessWidget {
-  const AddAnnouncementScreem({super.key});
+class AddAnnouncementScreen extends StatelessWidget {
+  const AddAnnouncementScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
