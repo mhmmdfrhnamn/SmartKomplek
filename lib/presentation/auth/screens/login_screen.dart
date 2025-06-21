@@ -1,6 +1,7 @@
 import 'package:smart_komplek/presentation/auth/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_komplek/presentation/home/screens/main_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -77,7 +78,9 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   onPressed: (){
-
+                    // Navigasi ke halaman utama menggunakan push replacement supaya tidak bisa kembali ke halaman login dengan tombol back
+                    Navigator.pushReplacement(context, 
+                    MaterialPageRoute(builder: (context)=> const MainScreen()));
                   },
                   child: Text(
                     "Login",
