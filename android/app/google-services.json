@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "558812065365",
+    "project_id": "smart-komplek",
+    "storage_bucket": "smart-komplek.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558812065365:android:cda2a67a869f240e1d6edc",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNvwauI079QJzaqOr7qsNP9jP95505YLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:558812065365:android:d5afd6ebf16494a71d6edc",
+        "android_client_info": {
+          "package_name": "com.example.smart_komplek"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNvwauI079QJzaqOr7qsNP9jP95505YLw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
