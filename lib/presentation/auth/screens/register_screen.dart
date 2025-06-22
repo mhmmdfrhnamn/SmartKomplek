@@ -1,10 +1,21 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:smart_komplek/presentation/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:smart_komplek/presentation/home/screens/main_screen.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +48,7 @@ class RegisterScreen extends StatelessWidget {
 
                 // Nama Lengkap
                 TextField(
+                  controller: _nameController,
                   decoration: InputDecoration(
                     labelText: "Nama Lengkap",
                     prefixIcon: const Icon(Icons.person_outline),
@@ -52,6 +64,7 @@ class RegisterScreen extends StatelessWidget {
 
                 // Email
                 TextField(
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: "Email",
@@ -68,6 +81,7 @@ class RegisterScreen extends StatelessWidget {
 
                 // Password
                 TextField(
+                  controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Password",
@@ -91,8 +105,32 @@ class RegisterScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: (){
+                  onPressed: () async {
+                    try {
+                      // Buat user baru dengan Firebase Auth
+                      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                        email: _emailController.text, 
+                        password: _passwordController.text,);
 
+                      // Jika berhasil, simpat data user ke firestore
+                      await FirebaseFirestore.instance.collection("users").doc(credential.user!.uid).set({
+                        'nama': _nameController.text,
+                        'email': _emailController.text,
+                        'role': 'warga',
+                        'status_iuran': 'Belum Lunas',
+                      });
+
+                      // Pindah ke hal utama
+                      if (mounted) {
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const MainScreen()));
+                      }
+                    } on FirebaseAuthException catch (e) {
+                      // Tampilkan pesan error jika gagal
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Firebase Auth Error ${e.message}"),
+                        backgroundColor: Colors.red,
+                      ));
+                    }
                   },
                   child: Text(
                     "Daftar",

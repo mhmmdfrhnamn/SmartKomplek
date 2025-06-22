@@ -2,10 +2,18 @@ import 'package:smart_komplek/presentation/auth/screens/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_komplek/presentation/home/screens/main_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,6 +46,7 @@ class LoginScreen extends StatelessWidget {
 
                 // Email
                 TextField(
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: "Email",
@@ -54,6 +63,7 @@ class LoginScreen extends StatelessWidget {
 
                 // Password
                 TextField(
+                  controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                     labelText: "Password",
@@ -77,10 +87,32 @@ class LoginScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: (){
-                    // Navigasi ke halaman utama menggunakan push replacement supaya tidak bisa kembali ke halaman login dengan tombol back
-                    Navigator.pushReplacement(context, 
-                    MaterialPageRoute(builder: (context)=> const MainScreen()));
+                  onPressed: () async {
+                    try {
+                    // login dengan email & password dari controller
+                    await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailController.text.trim(), // .trim() untuk menghapus spasi
+                      password: _passwordController.text.trim(),
+                    );
+
+                    // Jika berhasil, navigasi ke halaman utama
+                    if (mounted) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => const MainScreen()),
+                      );
+                    }
+                  } on FirebaseAuthException catch (e) {
+                    // Jika GAGAL, tampilkan pesan error 
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Login Gagal: ${e.message}"),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  }
                   },
                   child: Text(
                     "Login",
