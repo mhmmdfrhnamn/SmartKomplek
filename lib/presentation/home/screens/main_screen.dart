@@ -3,6 +3,8 @@ import 'package:smart_komplek/presentation/home/screens/add_announcement_screen.
 import 'package:smart_komplek/presentation/home/tabs/beranda_tab.dart';
 import 'package:smart_komplek/presentation/home/tabs/iuran_tab.dart';
 import 'package:smart_komplek/presentation/home/tabs/profil_tab.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -30,27 +32,55 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // body akan menampilkan halaman sesuai tab yang aktif
-      body: _pages[_selectedIndex],
 
-      // tombol floating action
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-          MaterialPageRoute(builder: (context)=> const AddAnnouncementScreen()),
-          );
-        },
-        backgroundColor: Colors.indigo,
-        child: const Icon(Icons.add, color: Colors.white,),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    // Ambil ID user yang sedang login
+    final String? uid = FirebaseAuth.instance.currentUser?.uid;
 
-        // Bottom navigator
-        bottomNavigationBar: BottomAppBar(
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 8.0,
-          child: BottomNavigationBar(
+    if (uid == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    return StreamBuilder<DocumentSnapshot>(
+      // Stream ini "berlangganan" pada data DOKUMEN user yang sedang login
+      stream: FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        
+        // Defaultnya, anggap pengguna adalah warga biasa
+        String userRole = 'warga';
+
+        // Jika data sudah ada dan valid dari Firestore
+        if (snapshot.hasData && snapshot.data!.exists) {
+          var data = snapshot.data!.data() as Map<String, dynamic>;
+          // Ambil nilai 'role' dari data. Jika tidak ada, tetap 'warga'.
+          userRole = data['role'] ?? 'warga';
+        }
+
+        // Sekarang kita bangun Scaffold-nya, sama seperti sebelumnya
+        return Scaffold(
+          body: _pages[_selectedIndex],
+
+          // --- INI BAGIAN AJAIBNYA ---
+          // Kita gunakan if-else sederhana (ternary operator)
+          // Jika userRole adalah 'admin', tampilkan FloatingActionButton.
+          // Jika tidak, tampilkan null (tidak ada tombol).
+          floatingActionButton: userRole == 'admin'
+              ? FloatingActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const AddAnnouncementScreen()),
+                    );
+                  },
+                  backgroundColor: Colors.indigo,
+                  child: const Icon(Icons.add, color: Colors.white),
+                )
+              : null,
+          
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
+          bottomNavigationBar: BottomAppBar(
+            shape: const CircularNotchedRectangle(),
+            notchMargin: 8.0,
+            child: BottomNavigationBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
               items: const <BottomNavigationBarItem>[
@@ -67,14 +97,17 @@ class _MainScreenState extends State<MainScreen> {
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person_outline),
                   activeIcon: Icon(Icons.person),
-                  label: 'Profil'),
+                  label: 'Profil',
+                ),
               ],
               currentIndex: _selectedIndex,
               onTap: _onItemTapped,
               selectedItemColor: Colors.indigo,
               unselectedItemColor: Colors.grey[600],
-            ) 
+            ),
           ),
+        );
+      }
     );
   }
 }
