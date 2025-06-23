@@ -14,6 +14,8 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,8 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Icon(
+                  Icons.home_work_outlined,
+                  size: 80,
+                  color: Colors.indigo,
+                ),
                 Text(
-                  "Selamat Datang",
+                  "Selamat Datang Di Smart Komplek",
                   style: GoogleFonts.poppins(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -88,6 +95,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   onPressed: () async {
+
+                    if (_isLoading) return;
+                    setState(() {
+                      _isLoading = true;
+                    });
+
                     try {
                     // login dengan email & password dari controller
                     await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -112,9 +125,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       );
                     }
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
                   }
                   },
-                  child: Text(
+                  child: _isLoading
+                  ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 3,)
+                  : Text(
                     "Login",
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,

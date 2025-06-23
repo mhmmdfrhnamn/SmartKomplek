@@ -16,6 +16,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +29,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Icon(
+                  Icons.home_work_outlined,
+                  size: 80,
+                  color: Colors.indigo,
+                ),
+                const SizedBox(height: 40,),
+
                 Text(
                   "Buat Akun Baru",
                   style: GoogleFonts.poppins(
@@ -106,6 +115,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   onPressed: () async {
+                    if (_isLoading = true) return;
+                    setState(() {
+                      _isLoading = true;
+                    });
                     try {
                       // Buat user baru dengan Firebase Auth
                       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -130,9 +143,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         content: Text("Firebase Auth Error ${e.message}"),
                         backgroundColor: Colors.red,
                       ));
+                    } finally {
+                      if(mounted) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
                     }
                   },
-                  child: Text(
+                  child: _isLoading
+                  ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 3,)
+                  : Text(
                     "Daftar",
                     style: GoogleFonts.poppins(
                       fontWeight: FontWeight.bold,
