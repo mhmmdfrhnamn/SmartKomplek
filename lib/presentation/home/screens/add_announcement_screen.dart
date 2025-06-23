@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddAnnouncementScreen extends StatefulWidget {
   const AddAnnouncementScreen({super.key});
@@ -46,6 +47,12 @@ class _AddAnnouncementScreenState extends State<AddAnnouncementScreen> {
             SnackBar(content: Text("Gagal mengirim: $e"), backgroundColor: Colors.red),
           );
         }
+      }finally {
+        if (mounted){
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     } else {
       // Tampilkan error jika ada field yang kosong
@@ -58,27 +65,45 @@ class _AddAnnouncementScreenState extends State<AddAnnouncementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Buat Pengumuman Baru")),
+      appBar: AppBar(title: Text("Buat Pengumuman Baru", style: GoogleFonts.poppins())),
       body: ListView(
   padding: const EdgeInsets.all(24.0),
   children: [
-    TextField(
+    TextFormField(
       controller: _judulController,
-      decoration: const InputDecoration(labelText: "Judul Pengumuman"),
+      decoration: InputDecoration(
+        labelText: "Judul Pengumuman",
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12.0)
+        ),
+        filled: true,
+        fillColor: Colors.grey.shade100
+      ),
+      style: GoogleFonts.poppins(),
       textCapitalization: TextCapitalization.sentences, // Huruf pertama kapital
     ),
     const SizedBox(height: 16),
-    TextField(
+    TextFormField(
       controller: _isiController,
-      decoration: const InputDecoration(labelText: "Isi Pengumuman"),
+      decoration: InputDecoration(labelText: "Isi Pengumuman",
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      filled: true,
+      fillColor: Colors.grey.shade100,
+      ),
       maxLines: 8, // Membuat field lebih besar
+      style: GoogleFonts.poppins(),
       textCapitalization: TextCapitalization.sentences,
     ),
     const SizedBox(height: 24),
     ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.indigo,
-        minimumSize: const Size.fromHeight(55),
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.0)
+        )
       ),
       // Logika onPressed 
       onPressed: _isLoading ? null : _kirimPengumuman, 

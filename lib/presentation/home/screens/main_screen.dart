@@ -40,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
     return StreamBuilder<DocumentSnapshot>(
-      // Stream ini "berlangganan" pada data DOKUMEN user yang sedang login
+
       stream: FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         
@@ -54,16 +54,16 @@ class _MainScreenState extends State<MainScreen> {
           userRole = data['role'] ?? 'warga';
         }
 
-        // Sekarang kita bangun Scaffold-nya, sama seperti sebelumnya
         return Scaffold(
           body: _pages[_selectedIndex],
 
-          // --- INI BAGIAN AJAIBNYA ---
-          // Kita gunakan if-else sederhana (ternary operator)
+
           // Jika userRole adalah 'admin', tampilkan FloatingActionButton.
           // Jika tidak, tampilkan null (tidak ada tombol).
           floatingActionButton: userRole == 'admin'
-              ? FloatingActionButton(
+            ? Transform.translate(
+              offset: const Offset(0, -15),
+              child: FloatingActionButton(
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -71,15 +71,22 @@ class _MainScreenState extends State<MainScreen> {
                     );
                   },
                   backgroundColor: Colors.indigo,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                   child: const Icon(Icons.add, color: Colors.white),
                 )
+            )
+              
               : null,
           
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
-          bottomNavigationBar: BottomAppBar(
-            shape: const CircularNotchedRectangle(),
+          bottomNavigationBar: Container( 
+            height: 85,
+            child: BottomAppBar(
             notchMargin: 8.0,
+            clipBehavior: Clip.antiAlias,
             child: BottomNavigationBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -105,6 +112,7 @@ class _MainScreenState extends State<MainScreen> {
               selectedItemColor: Colors.indigo,
               unselectedItemColor: Colors.grey[600],
             ),
+          ),
           ),
         );
       }
