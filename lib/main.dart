@@ -1,7 +1,7 @@
-import 'package:smart_komplek/presentation/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:smart_komplek/presentation/splash/splash_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       ),
 
       // navigasi ke halaman login
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
