@@ -11,7 +11,7 @@ plugins {
 android {
     namespace = "com.example.smart_komplek"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973" // UBAH BARIS INI: Sesuai rekomendasi error
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -27,10 +27,11 @@ android {
         applicationId = "com.example.smart_komplek"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
+        minSdk = 23 // UBAH BARIS INI: Dari flutter.minSdkVersion menjadi 23
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true // TAMBAHKAN BARIS INI: Untuk mencegah error baru
     }
 
     buildTypes {
@@ -44,4 +45,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+// TAMBAHKAN BLOK INI DI BAGIAN BAWAH
+dependencies {
+    implementation("androidx.multidex:multidex:2.0.1")
 }
